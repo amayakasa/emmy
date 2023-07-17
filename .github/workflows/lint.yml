@@ -1,0 +1,36 @@
+on:
+  push:
+    branches: [ primary, feature/*, fix/* ]
+
+jobs:
+  detect-changes:
+    name: Lint Python
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install Poetry
+        run: |
+          pip install poetry
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: poetry
+          cache-dependency-path: poetry.lock
+      - name: Set Poetry environment
+        run: |
+          poetry env use 3.11
+      - name: Install dependencies
+        run: |
+          poetry install --no-root
+      - name: Lint Python (Black)
+        run: |
+          poetry run black ./sources
+      - name: Lint Python (Ruff)
+        run: |
+          poetry run ruff check ./sources
+      - name: Lint Python (mypy)
+        run: |
+          poetry run mypy ./sources
