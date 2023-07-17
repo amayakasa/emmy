@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 discord = "^2.3.1"
+wavelink = "^2.6.0"
 
 [tool.poetry.group.style.dependencies]
 black = "^23.7.0"
@@ -57,6 +58,10 @@ select = [
 [tool.mypy]
 pretty = true
 python_version = "3.11"
+
+[[tool.mypy.overrides]]
+module = "wavelink"
+ignore_missing_imports = true
 
 [build-system]
 requires = ["poetry-core"]
